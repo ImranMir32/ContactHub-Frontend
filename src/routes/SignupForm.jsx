@@ -211,7 +211,7 @@ const SignupForm = () => {
 
               {/* button */}
               <button disabled={isSubmitting} type="submit" class="button">
-                Submit
+                Sign up
               </button>
               {/* <ToastContainer /> */}
 

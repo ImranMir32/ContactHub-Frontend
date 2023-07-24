@@ -4,11 +4,6 @@
 :root {
   --bodyBackground: #ccccff;
   --successGreen: rgb(19, 181, 221);
-  --buttonColour: rgb(128, 0, 0);
-  --dangerRed: #ffc0c7;
-  --questionBG: #e4e8ee;
-  --fontPrimary: #002333;
-  --active: #2dbf64;
 }
 
 * {

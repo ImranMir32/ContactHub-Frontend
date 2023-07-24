@@ -118,6 +118,7 @@ button:disabled {
   justify-content: center;
   align-items: center;
   gap: 10px;
+  /* border: 2px solid #4a5568; */
   border-radius: 8px;
   cursor: pointer;
   border: 0px;

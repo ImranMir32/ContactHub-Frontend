@@ -5,6 +5,7 @@ import SignupForm from "./routes/SignupForm";
 import ErrorPage from "./error.page";
 import "./styles/main.css";
 import "./styles/Form.css";
+import Home from "./routes/Home";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,11 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignupForm />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
     errorElement: <ErrorPage />,
   },
 ]);

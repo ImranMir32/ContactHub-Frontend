@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 // import { GlobalStateContext } from "../Context/Global_Context";
 // import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
-import { GrMailOption } from "react-icons/gr";
+import { GrMail } from "react-icons/gr";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { BiSolidUser } from "react-icons/bi";
 import { ImMobile } from "react-icons/im";
@@ -109,7 +109,7 @@ const SignupForm = () => {
 
               {/* email */}
               <div className="input-container">
-                <GrMailOption size={20} className="icon" />
+                <GrMail size={20} className="icon" />
                 <input
                   value={values.email}
                   onChange={handleChange}
@@ -159,12 +159,14 @@ const SignupForm = () => {
                   <BsFillEyeFill
                     size={20}
                     className="icon-right"
+                    color="rgb(24, 188, 230)"
                     onClick={togglePasswordVisibility}
                   />
                 ) : (
                   <BsFillEyeSlashFill
                     size={20}
                     className="icon-right"
+                    color="rgb(24, 188, 230)"
                     onClick={togglePasswordVisibility}
                   />
                 )}
@@ -194,12 +196,14 @@ const SignupForm = () => {
                   <BsFillEyeFill
                     size={20}
                     className="icon-right"
+                    color="rgb(24, 188, 230)"
                     onClick={togglePasswordVisibility2}
                   />
                 ) : (
                   <BsFillEyeSlashFill
                     size={20}
                     className="icon-right"
+                    color="rgb(24, 188, 230)"
                     onClick={togglePasswordVisibility2}
                   />
                 )}

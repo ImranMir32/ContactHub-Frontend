@@ -59,7 +59,7 @@ const Home = () => {
             <div className="contact-info">
               <p>Name : Rafi Hasan</p>
               <p>Phone : 01866078475</p>
-              <p className="corner">Email : rafihasan@gmail.com</p>
+              <p>Email : rafihasan@gmail.com</p>
             </div>
             <div className="contact-options">
               <div className="view">
@@ -73,8 +73,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="contacts-container">
+
           <div className="contact">
             <div className="contact-img">
               <img className="img" src={demo} alt="profile" />
@@ -82,7 +81,7 @@ const Home = () => {
             <div className="contact-info">
               <p>Name : Rafi Hasan</p>
               <p>Phone : 01866078475</p>
-              <p className="corner">Email : rafihasan@gmail.com</p>
+              <p>Email : rafihasan@gmail.com</p>
             </div>
             <div className="contact-options">
               <div className="view">
@@ -96,8 +95,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="contacts-container">
+
           <div className="contact">
             <div className="contact-img">
               <img className="img" src={demo} alt="profile" />
@@ -105,7 +103,7 @@ const Home = () => {
             <div className="contact-info">
               <p>Name : Rafi Hasan</p>
               <p>Phone : 01866078475</p>
-              <p className="corner">Email : rafihasan@gmail.com</p>
+              <p>Email : rafihasan@gmail.com</p>
             </div>
             <div className="contact-options">
               <div className="view">

@@ -5,26 +5,26 @@ import axios from "axios";
 const GlobalMethodsContext = createContext();
 
 const GlobalMethodsProvider = ({ children }) => {
-  // const { setToken, setUser } = useContext(GlobalStateContext);
+  const { setToken, setUser } = useContext(GlobalStateContext);
 
-  //   const SignIn = async (values) => {
-  //     try {
-  //       const url = "http://localhost:4000/api/users/login";
-  //       const response = await axios({
-  //         method: "POST",
-  //         url,
-  //         data: values,
-  //       });
-  //       //   console.log("name: ", response.data.access_token);
-  //       setUserName(response.data.user.name);
-  //       setToken(response.data.access_token);
-  //       setUser(response.data.user);
-  //       return response.status;
-  //     } catch (error) {
-  //       console.log(error.message);
-  //       return 401;
-  //     }
-  //   };
+  const SignIn = async (values) => {
+    console.log("values----", values);
+    try {
+      const url = "http://localhost:4000/api/user/login";
+      const response = await axios({
+        method: "POST",
+        url,
+        data: values,
+      });
+      console.log("name: ", response);
+      setToken(response.data.access_token);
+      setUser(response.data.user);
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return 401;
+    }
+  };
 
   const SignUp = async (values) => {
     console.log("-->", values);
@@ -90,7 +90,7 @@ const GlobalMethodsProvider = ({ children }) => {
     <GlobalMethodsContext.Provider
       value={{
         // clearAllData,
-        // SignIn,
+        SignIn,
         SignUp,
         // imgUpload,
         // updateUser,

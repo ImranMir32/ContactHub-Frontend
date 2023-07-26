@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useFormik } from "formik";
 import { signInSchema } from "../schemas/schemas";
 import { Link } from "react-router-dom";
 
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { GlobalStateContext } from "../Context/Global_Context";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 import { GrMail } from "react-icons/gr";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 
 const SignInForm = () => {
+  const { SignIn } = useContext(GlobalMethodsContext);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  // functions
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -23,32 +28,19 @@ const SignInForm = () => {
     console.log("ok");
     console.log(JSON.stringify(values));
 
-    // if (
-    //   values.email === "uitsadmin@gmail.com" &&
-    //   values.password === "uitsadmin"
-    // )
-    //   navigate("/admin-dashboard");
+    const res = await SignIn(values);
 
-    // let result = await fetch("http://localhost:8000/api/v1/users/login", {
-    //   method: "POST",
-    //   body: JSON.stringify(values),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // result = await result.json();
-    // // console.log("result--> ", result.newUser);
-    // actions.resetForm();
+    console.log("status--->", res.status);
+    console.log("data--->", res.data);
 
-    // if (result.status === "success") {
-    //   setUser(result.user);
-    //   if (result.user.role === "teacher") navigate("/teacher-dashboard");
-    //   else if (result.user.role === "driver") navigate("/driver-dashboard");
-    // } else {
-    //   toast.error("Wrong email or password !", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    // }
+    if (res.status === 200) {
+      navigate("/home");
+      actions.resetForm();
+    } else {
+      toast.error("Wrong email or password !", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   useEffect(() => {
@@ -137,7 +129,7 @@ const SignInForm = () => {
               <button disabled={isSubmitting} type="submit" class="button">
                 Login
               </button>
-              {/* <ToastContainer /> */}
+              <ToastContainer />
 
               {/* login  */}
               <div className="form-info">

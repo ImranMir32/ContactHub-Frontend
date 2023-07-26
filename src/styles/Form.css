@@ -99,6 +99,7 @@ button:disabled {
 
 .error {
   color: #f12a2a;
+  width: 350px;
   font-size: 0.75rem;
   font-weight: bold;
   text-align: left;

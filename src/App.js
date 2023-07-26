@@ -7,6 +7,9 @@ import "./styles/main.css";
 import "./styles/Form.css";
 import Home from "./routes/Home";
 
+import { GlobalStateProvider } from "./Context/Global_Context";
+import { GlobalMethodsProvider } from "./Context/GlobalMethodsContext";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,11 +30,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    // <GlobalStateProvider>
-    // <GlobalMethodsProvider>
-    <RouterProvider router={router} />
-    // </GlobalMethodsProvider>
-    // </GlobalStateProvider>
+    <GlobalStateProvider>
+      <GlobalMethodsProvider>
+        <RouterProvider router={router} />
+      </GlobalMethodsProvider>
+    </GlobalStateProvider>
   );
 }
 

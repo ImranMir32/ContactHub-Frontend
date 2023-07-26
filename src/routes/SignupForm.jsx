@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useFormik } from "formik";
 import { userSchema } from "../schemas/schemas";
 import { Link } from "react-router-dom";
 
-// import { useNavigate } from "react-router-dom";
-// import { GlobalStateContext } from "../Context/Global_Context";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { GrMail } from "react-icons/gr";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { BiSolidUser } from "react-icons/bi";
 import { ImMobile } from "react-icons/im";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 
 const SignupForm = () => {
+  const { SignUp } = useContext(GlobalMethodsContext);
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+  const navigate = useNavigate();
+
+  // fuctions
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -30,32 +34,28 @@ const SignupForm = () => {
     console.log("ok");
     console.log(JSON.stringify(values));
 
-    // if (
-    //   values.email === "uitsadmin@gmail.com" &&
-    //   values.password === "uitsadmin"
-    // )
-    //   navigate("/admin-dashboard");
+    const res = await SignUp(values);
 
-    // let result = await fetch("http://localhost:8000/api/v1/users/login", {
-    //   method: "POST",
-    //   body: JSON.stringify(values),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // result = await result.json();
-    // // console.log("result--> ", result.newUser);
-    // actions.resetForm();
+    console.log("status--->", res.status);
+    console.log("data--->", res.data);
 
-    // if (result.status === "success") {
-    //   setUser(result.user);
-    //   if (result.user.role === "teacher") navigate("/teacher-dashboard");
-    //   else if (result.user.role === "driver") navigate("/driver-dashboard");
-    // } else {
-    //   toast.error("Wrong email or password !", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    // }
+    if (res.status === 201) {
+      toast.success(`${res.data}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      actions.resetForm();
+    } else if (res.status === 400) {
+      toast.warning(`${res.data}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.warning(`Network response was not ok`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   useEffect(() => {
@@ -181,7 +181,7 @@ const SignupForm = () => {
                 <RiLockPasswordLine size={22} className="icon" />
                 <input
                   id="confirmPassword"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword2 ? "text" : "password"}
                   placeholder="Enter confirm password"
                   value={values.confirmPassword}
                   onChange={handleChange}
@@ -217,7 +217,7 @@ const SignupForm = () => {
               <button disabled={isSubmitting} type="submit" class="button">
                 Sign up
               </button>
-              {/* <ToastContainer /> */}
+              <ToastContainer />
 
               {/* login  */}
               <div className="form-info">

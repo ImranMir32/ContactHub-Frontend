@@ -18,6 +18,36 @@ import "react-toastify/dist/ReactToastify.css";
 const Home = () => {
   const [Page, setPage] = useState("");
   const [show, setShow] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const contactList = [
+    {
+      img: { demo },
+      name: "imlim",
+      email: "imranmir@gmail.com",
+      phone: "01945545488",
+    },
+    {
+      img: { demo },
+      name: "imran",
+      email: "imranmir@gmail.com",
+      phone: "01945545488",
+    },
+    {
+      img: { demo },
+      name: "ilish",
+      email: "imranmir@gmail.com",
+      phone: "01945545488",
+    },
+  ];
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value); // Update the search query state as the user types
+  };
+
+  const filteredContacts = contactList.filter((contact) =>
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleButtonClick = (param) => {
     setPage(param);
@@ -29,7 +59,8 @@ const Home = () => {
     setShow(true); // Show the contact details section
   };
 
-  const handleDeleteButton = () => {
+  const handleDeleteButton = (contact) => {
+    console.log(contact);
     toast.info(
       <div>
         <p>Are you sure you want to delete this contact?</p>
@@ -38,7 +69,7 @@ const Home = () => {
             className="toast-button-yes"
             onClick={() => {
               // Perform the delete operation here
-              console.log("Contact deleted!");
+              console.log("Contact deleted!", contact.name);
               // Close the toast
               toast.dismiss();
             }}
@@ -107,13 +138,10 @@ const Home = () => {
             <div className="search-bar">
               <div className="input-container search-input">
                 <input
-                  //   value={values.email}
-                  //   onChange={handleChange}
-                  //   id="email"
-                  //   type="email"
+                  type="text"
                   placeholder="Search contact..."
-                  //   onBlur={handleBlur}
-                  //   className={errors.email && touched.email ? "input-error" : ""}
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
                 />
               </div>
               <button className="search-button">
@@ -123,84 +151,43 @@ const Home = () => {
           </div>
 
           <div className="contacts-container">
-            <div className="contact">
-              <div className="contact-img">
-                <img className="img" src={demo} alt="profile" />
-              </div>
-              <div className="contact-info">
-                <p>Name : Rafi Hasan</p>
-                <p>Phone : 01866078475</p>
-                <p>Email : rafihasan@gmail.com</p>
-              </div>
-              <div className="contact-options">
-                <div className="view">
-                  <BsFillEyeFill size={20} color="white" />
+            {/* map */}
+            {filteredContacts.map((contact) => (
+              <div className="contact" key={contact.name}>
+                <div className="contact-img">
+                  <img className="img" src={demo} alt="profile" />
                 </div>
-                <div className="edit">
-                  <FaEdit size={20} color="white" />
+                <div className="contact-info">
+                  <p>Name : {contact.name}</p>
+                  <p>Phone : {contact.phone}</p>
+                  <p>Email : {contact.email}</p>
                 </div>
-                <div className="delete">
-                  <MdDelete size={20} color="white" />
-                </div>
-              </div>
-            </div>
-
-            <div className="contact">
-              <div className="contact-img">
-                <img className="img" src={demo} alt="profile" />
-              </div>
-              <div className="contact-info">
-                <p>Name : Rafi Hasan</p>
-                <p>Phone : 01866078475</p>
-                <p>Email : rafihasan@gmail.com</p>
-              </div>
-              <div className="contact-options">
-                <div className="view">
-                  <BsFillEyeFill size={20} color="white" />
-                </div>
-                <div className="edit">
-                  <FaEdit size={20} color="white" />
-                </div>
-                <div className="delete">
-                  <MdDelete size={20} color="white" />
+                <div className="contact-options">
+                  <div className="view">
+                    <BsFillEyeFill
+                      size={20}
+                      color="white"
+                      onClick={() => handleButtonClick("View Contact")}
+                    />
+                  </div>
+                  <div className="edit">
+                    <FaEdit
+                      size={20}
+                      color="white"
+                      onClick={() => handleButtonClick("Edit Contact")}
+                    />
+                  </div>
+                  <div className="delete">
+                    <MdDelete
+                      size={20}
+                      color="white"
+                      onClick={() => handleDeleteButton(contact)}
+                    />
+                    <ToastContainer closeButton={false} />
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="contact">
-              <div className="contact-img">
-                <img className="img" src={demo} alt="profile" />
-              </div>
-              <div className="contact-info">
-                <p>Name : Rafi Hasan</p>
-                <p>Phone : 01866078475</p>
-                <p>Email : rafihasan@gmail.com</p>
-              </div>
-              <div className="contact-options">
-                <div className="view">
-                  <BsFillEyeFill
-                    size={20}
-                    color="white"
-                    onClick={() => handleButtonClick("View Contact")}
-                  />
-                </div>
-                <div className="edit">
-                  <FaEdit
-                    size={20}
-                    color="white"
-                    onClick={() => handleButtonClick("Edit Contact")}
-                  />
-                </div>
-                <div className="delete">
-                  <MdDelete
-                    size={20}
-                    color="white"
-                    onClick={() => handleDeleteButton()}
-                  />
-                  <ToastContainer />
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       ) : (

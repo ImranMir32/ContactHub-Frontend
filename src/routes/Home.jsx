@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "../styles/Home.css";
 import demo from "../assets/demo.webp";
-import { BsSearch } from "react-icons/bs";
-import { BsFillEyeFill } from "react-icons/bs";
+import { BsSearch, BsPersonFillAdd, BsFillEyeFill } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { BsPersonFillAdd } from "react-icons/bs";
+import { BiLogOut } from "react-icons/bi";
 
 import EditContact from "../components/EditContact";
 import UpdateUser from "../components/UpdateUser";
@@ -15,11 +16,16 @@ import AddContact from "../components/AddContact";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { GlobalStateContext } from "../Context/Global_Context";
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 const Home = () => {
   const [Page, setPage] = useState("");
   const [show, setShow] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { user } = useContext(GlobalStateContext);
+  const { clearAllData } = useContext(GlobalMethodsContext);
+  const navigate = useNavigate();
   const contactList = [
     {
       img: { demo },
@@ -40,6 +46,12 @@ const Home = () => {
       phone: "01945545488",
     },
   ];
+
+  // functions
+  const handleExitButton = () => {
+    clearAllData();
+    navigate("/");
+  };
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value); // Update the search query state as the user types
@@ -99,14 +111,18 @@ const Home = () => {
   return (
     <div className="user-container">
       <div className="user-profile">
+        <button className="button-exit" onClick={() => handleExitButton()}>
+          <BiLogOut color="white" size={20} />
+          Log Out
+        </button>
         <div className="profile-image">
           <img className="image" src={demo} alt="profile" />
         </div>
         <div className="user-info">
-          <p>Name : Imran Mir</p>
-          <p>Email: imranmir6677@gmail.com</p>
-          <p>Phone : 01111111111</p>
-          <p>Total Contacts : 10</p>
+          <p>Name : {user.name}</p>
+          <p>Email: {user.email}</p>
+          <p>Phone : {user.phone}</p>
+          <p>Total Contacts : {contactList.length}</p>
         </div>
 
         {/* button */}

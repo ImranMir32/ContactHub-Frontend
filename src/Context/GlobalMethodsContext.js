@@ -5,7 +5,8 @@ import axios from "axios";
 const GlobalMethodsContext = createContext();
 
 const GlobalMethodsProvider = ({ children }) => {
-  const { setToken, setUser } = useContext(GlobalStateContext);
+  const { user, token, setToken, setUser, setContactList } =
+    useContext(GlobalStateContext);
 
   const SignIn = async (values) => {
     console.log("values----", values);
@@ -48,6 +49,29 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
+  const updateUser = async (values) => {
+    try {
+      console.log("-->", user._id);
+      const url = `http://localhost:4000/api/user/${user._id}`;
+      const response = await axios({
+        method: "PUT",
+        url,
+        data: values,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response.data);
+      setUser(response.data);
+      // setUserName(response.data.name);
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
+
   //   const imgUpload = async (values) => {
   //     try {
   //       await axios.post("http://localhost:4000/api/image/upload", values, {
@@ -62,38 +86,19 @@ const GlobalMethodsProvider = ({ children }) => {
   //     }
   //   };
 
-  //   const updateUser = async (values) => {
-  //     try {
-  //       const url = `http://localhost:4000/api/users/update/${user.email}`;
-  //       const response = await axios({
-  //         method: "PUT",
-  //         url,
-  //         data: values,
-  //       });
-
-  //       console.log(response.data);
-  //       setUser(response.data);
-  //       setUserName(response.data.name);
-  //       return response.status;
-  //     } catch (error) {
-  //       console.log(error.message);
-  //       return 500;
-  //     }
-  //   };
-
-  //   const clearAllData = () => {
-  //     setUserName("");
-  //     setToken("");
-  //     setUser("");
-  //   };
+  const clearAllData = () => {
+    setToken("");
+    setUser("");
+    setContactList("");
+  };
   return (
     <GlobalMethodsContext.Provider
       value={{
-        // clearAllData,
+        clearAllData,
         SignIn,
         SignUp,
         // imgUpload,
-        // updateUser,
+        updateUser,
       }}
     >
       {children}

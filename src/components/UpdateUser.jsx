@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useFormik } from "formik";
-import { userSchema } from "../schemas/schemas";
+import { updateUserSchema } from "../schemas/schemas";
 import "../styles/Contacts/AddContact.css";
 
-// import { GlobalStateContext } from "../Context/Global_Context";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 import { GrMail } from "react-icons/gr";
 import { BiSolidUser } from "react-icons/bi";
 import { ImMobile } from "react-icons/im";
@@ -13,9 +10,18 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdCancel } from "react-icons/md";
 
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+import { GlobalStateContext } from "../Context/Global_Context";
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
+
 const UpdateUser = ({ goBack }) => {
+  const { user } = useContext(GlobalStateContext);
+  const { updateUser } = useContext(GlobalMethodsContext);
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+
+  // functions
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -29,30 +35,22 @@ const UpdateUser = ({ goBack }) => {
     console.log(actions);
     console.log("ok");
     console.log(JSON.stringify(values));
-
-    // if (
-    //   values.email === "uitsadmin@gmail.com" &&
-    //   values.password === "uitsadmin"
-    // )
-    //   navigate("/admin-dashboard");
-
-    // let result = await fetch("http://localhost:8000/api/v1/users/login", {
-    //   method: "POST",
-    //   body: JSON.stringify(values),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // result = await result.json();
-    // // console.log("result--> ", result.newUser);
-    // actions.resetForm();
-
-    // if (result.status === "success") {
-    //   setUser(result.user);
-    //   if (result.user.role === "teacher") navigate("/teacher-dashboard");
-    //   else if (result.user.role === "driver") navigate("/driver-dashboard");
+    const res = await updateUser(values);
+    console.log("res--->", res);
+    // if (res.status === 200) {
+    //   toast.success(`${res.data}`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   setTimeout(() => {
+    //     navigate("/");
+    //   }, 2000);
+    //   actions.resetForm();
+    // } else if (res.status === 400) {
+    //   toast.warning(`${res.data}`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
     // } else {
-    //   toast.error("Wrong email or password !", {
+    //   toast.warning(`Network response was not ok`, {
     //     position: toast.POSITION.TOP_RIGHT,
     //   });
     // }
@@ -71,11 +69,13 @@ const UpdateUser = ({ goBack }) => {
     handleSubmit,
   } = useFormik({
     initialValues: {
-      name: "Md. Imran",
-      email: "imranmir@gmail.com",
-      phone: "0186678475",
+      name: `${user.name}`,
+      email: `${user.email}`,
+      phone: `${user.phone}`,
+      new_password: "",
+      password: "",
     },
-    validationSchema: userSchema,
+    validationSchema: updateUserSchema,
     onSubmit,
   });
 
@@ -143,7 +143,7 @@ const UpdateUser = ({ goBack }) => {
               id="new_password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter your new password"
-              value={values.password}
+              value={values.new_password}
               onChange={handleChange}
               onBlur={handleBlur}
               className={
@@ -168,7 +168,7 @@ const UpdateUser = ({ goBack }) => {
             {/* <BsFillEyeSlashFill size={20} className="icon-right" /> */}
           </div>
           {errors.new_password && touched.new_password && (
-            <p className="error">{errors.new_assword}</p>
+            <p className="error">{errors.new_password}</p>
           )}
 
           {/* password */}

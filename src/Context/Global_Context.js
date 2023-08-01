@@ -5,13 +5,13 @@ const GlobalStateContext = createContext();
 const GlobalStateProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState({});
-  const [conactList, setContactList] = useState({});
+  const [contactList, setContactList] = useState([]);
   return (
     <GlobalStateContext.Provider
       value={{
         user,
         token,
-        conactList,
+        contactList,
         setUser,
         setToken,
         setContactList,

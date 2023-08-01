@@ -20,6 +20,8 @@ const GlobalMethodsProvider = ({ children }) => {
       console.log("name: ", response);
       setToken(response.data.access_token);
       setUser(response.data.user);
+      const params = response.data.access_token;
+      await getAllContacts({ params });
       return response;
     } catch (error) {
       console.log(error.message);
@@ -66,6 +68,27 @@ const GlobalMethodsProvider = ({ children }) => {
       setUser(response.data);
       // setUserName(response.data.name);
       return response;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
+
+  const getAllContacts = async ({ params }) => {
+    try {
+      console.log("va-", params);
+      const url = `http://localhost:4000/api/contacts`;
+      const response = await axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${params}`,
+        },
+      });
+
+      console.log("contacts----->", response.data.length);
+      setContactList(response.data);
+      return;
     } catch (error) {
       console.log(error.message);
       return 500;

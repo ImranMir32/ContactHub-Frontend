@@ -23,29 +23,10 @@ const Home = () => {
   const [show, setShow] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { user } = useContext(GlobalStateContext);
+  const { user, contactList } = useContext(GlobalStateContext);
   const { clearAllData } = useContext(GlobalMethodsContext);
   const navigate = useNavigate();
-  const contactList = [
-    {
-      img: { demo },
-      name: "imlim",
-      email: "imranmir@gmail.com",
-      phone: "01945545488",
-    },
-    {
-      img: { demo },
-      name: "imran",
-      email: "imranmir@gmail.com",
-      phone: "01945545488",
-    },
-    {
-      img: { demo },
-      name: "ilish",
-      email: "imranmir@gmail.com",
-      phone: "01945545488",
-    },
-  ];
+  // console.log("array--->", contactList);
 
   // functions
   const handleExitButton = () => {

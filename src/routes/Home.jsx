@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/Home.css";
@@ -19,12 +19,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { GlobalStateContext } from "../Context/Global_Context";
 import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 const Home = () => {
+  const { user, contactList, reload } = useContext(GlobalStateContext);
+  const { clearAllData } = useContext(GlobalMethodsContext);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [reload]);
+
   const [Page, setPage] = useState("");
   const [show, setShow] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { user, contactList } = useContext(GlobalStateContext);
-  const { clearAllData } = useContext(GlobalMethodsContext);
   const navigate = useNavigate();
   // console.log("array--->", contactList);
 

@@ -21,7 +21,7 @@ const GlobalMethodsProvider = ({ children }) => {
       setToken(response.data.access_token);
       setUser(response.data.user);
       const params = response.data.access_token;
-      await getAllContacts({ params });
+      await getAllContacts(params);
       return response;
     } catch (error) {
       console.log(error.message);
@@ -74,7 +74,7 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
-  const getAllContacts = async ({ params }) => {
+  const getAllContacts = async (params) => {
     try {
       console.log("va-", params);
       const url = `http://localhost:4000/api/contacts`;
@@ -92,6 +92,33 @@ const GlobalMethodsProvider = ({ children }) => {
     } catch (error) {
       console.log(error.message);
       return 500;
+    }
+  };
+
+  const addContact = async (values) => {
+    console.log("-->", values);
+    try {
+      const url = "http://localhost:4000/api/contacts";
+      const response = await axios({
+        method: "POST",
+        url,
+        data: values,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 400; // Customize this condition as needed
+        },
+      });
+      console.log({ token });
+      await getAllContacts(token);
+
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return error.message;
     }
   };
 
@@ -122,6 +149,7 @@ const GlobalMethodsProvider = ({ children }) => {
         SignUp,
         // imgUpload,
         updateUser,
+        addContact,
       }}
     >
       {children}

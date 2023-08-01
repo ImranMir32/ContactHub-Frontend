@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useFormik } from "formik";
-import { userSchema } from "../schemas/schemas";
+import { contactSchema } from "../schemas/schemas";
 import "../styles/Contacts/AddContact.css";
 
 // import { GlobalStateContext } from "../Context/Global_Context";
@@ -10,12 +10,16 @@ import { GrMail } from "react-icons/gr";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BiSolidUser } from "react-icons/bi";
 import { ImMobile } from "react-icons/im";
-
 import { MdCancel } from "react-icons/md";
 
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
+import { GlobalStateContext } from "../Context/Global_Context";
+
 const AddContact = ({ goBack }) => {
-  const catagoryList = {
-    name: ["", "Category 1", "Category 2", "Category 3"],
+  const { addContact } = useContext(GlobalMethodsContext);
+  const { setReload } = useContext(GlobalStateContext);
+  const categoryList = {
+    name: ["", "Friend", "Family", "Colleague", "Others"],
     // Add other properties here if needed
   };
 
@@ -25,32 +29,8 @@ const AddContact = ({ goBack }) => {
     console.log("ok");
     console.log(JSON.stringify(values));
 
-    // if (
-    //   values.email === "uitsadmin@gmail.com" &&
-    //   values.password === "uitsadmin"
-    // )
-    //   navigate("/admin-dashboard");
-
-    // let result = await fetch("http://localhost:8000/api/v1/users/login", {
-    //   method: "POST",
-    //   body: JSON.stringify(values),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // result = await result.json();
-    // // console.log("result--> ", result.newUser);
-    // actions.resetForm();
-
-    // if (result.status === "success") {
-    //   setUser(result.user);
-    //   if (result.user.role === "teacher") navigate("/teacher-dashboard");
-    //   else if (result.user.role === "driver") navigate("/driver-dashboard");
-    // } else {
-    //   toast.error("Wrong email or password !", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    // }
+    const res = await addContact(values);
+    console.log(res);
   };
 
   useEffect(() => {
@@ -69,10 +49,9 @@ const AddContact = ({ goBack }) => {
       name: "",
       email: "",
       phone: "",
-      password: "",
-      confirmPassword: "",
+      category: "",
     },
-    validationSchema: userSchema,
+    validationSchema: contactSchema,
     onSubmit,
   });
 
@@ -135,8 +114,13 @@ const AddContact = ({ goBack }) => {
 
           <div className="input-container">
             <BiSolidCategoryAlt size={20} className="icon" />
-            <select>
-              {catagoryList.name.map((category) => {
+            <select
+              id="category" // Note the correct spelling of 'category'
+              name="category"
+              value={values.category}
+              onChange={handleChange}
+            >
+              {categoryList.name.map((category) => {
                 return (
                   <option key={category} value={category}>
                     {category}
@@ -155,6 +139,7 @@ const AddContact = ({ goBack }) => {
             size={40}
             className="icon-center"
             onClick={() => {
+              setReload(true);
               goBack();
               console.log("yes");
             }}

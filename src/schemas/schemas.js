@@ -45,3 +45,13 @@ export const updateUserSchema = yup.object().shape({
   }),
   password: yup.string().required("Required"),
 });
+
+export const contactSchema = yup.object().shape({
+  name: yup.string().min(4).required("Name is a required field"),
+  email: yup.string().email("Please enter a valid email").required("Required"),
+  phone: yup
+    .string()
+    .matches(phoneBd, { message: "Enter a valid phone number" })
+    .required("Required"),
+  category: yup.string().required("Required"),
+});

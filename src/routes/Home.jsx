@@ -117,7 +117,9 @@ const Home = () => {
         <div className="user-button">
           <button
             className="button"
-            onClick={() => handleButtonClick("Update User")}
+            onClick={() =>
+              handleButtonClick({ contact: {}, info: "Update User" })
+            }
           >
             Update Profile
           </button>

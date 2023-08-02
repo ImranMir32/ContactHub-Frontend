@@ -10,24 +10,19 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdCancel } from "react-icons/md";
 
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { GlobalStateContext } from "../Context/Global_Context";
 import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 
 const UpdateUser = ({ goBack }) => {
-  const { user } = useContext(GlobalStateContext);
+  const { user, setReload } = useContext(GlobalStateContext);
   const { updateUser } = useContext(GlobalMethodsContext);
   const [showPassword, setShowPassword] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
 
   // functions
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
-  const togglePasswordVisibility2 = () => {
-    setShowPassword2((prevShowPassword2) => !prevShowPassword2);
   };
 
   const onSubmit = async (values, actions) => {
@@ -37,23 +32,20 @@ const UpdateUser = ({ goBack }) => {
     console.log(JSON.stringify(values));
     const res = await updateUser(values);
     console.log("res--->", res);
-    // if (res.status === 200) {
-    //   toast.success(`${res.data}`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    //   setTimeout(() => {
-    //     navigate("/");
-    //   }, 2000);
-    //   actions.resetForm();
-    // } else if (res.status === 400) {
-    //   toast.warning(`${res.data}`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    // } else {
-    //   toast.warning(`Network response was not ok`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    // }
+
+    if (res.status === 200) {
+      setReload(true);
+      actions.resetForm();
+      goBack();
+    } else if (res.status === 401) {
+      toast.warning(`${res.data}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.warning(`Network response was not ok`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   useEffect(() => {
@@ -72,7 +64,6 @@ const UpdateUser = ({ goBack }) => {
       name: `${user.name}`,
       email: `${user.email}`,
       phone: `${user.phone}`,
-      new_password: "",
       password: "",
     },
     validationSchema: updateUserSchema,
@@ -137,17 +128,19 @@ const UpdateUser = ({ goBack }) => {
           )}
 
           {/* password */}
+
+          {/* password */}
           <div className="input-container">
             <RiLockPasswordLine size={22} className="icon" />
             <input
-              id="new_password"
+              id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Enter your new password"
-              value={values.new_password}
+              placeholder="Enter your current password"
+              value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
               className={
-                errors.new_password && touched.new_password ? "input-error" : ""
+                errors.password && touched.password ? "input-error" : ""
               }
             />
             {showPassword ? (
@@ -167,41 +160,6 @@ const UpdateUser = ({ goBack }) => {
             )}
             {/* <BsFillEyeSlashFill size={20} className="icon-right" /> */}
           </div>
-          {errors.new_password && touched.new_password && (
-            <p className="error">{errors.new_password}</p>
-          )}
-
-          {/* password */}
-          <div className="input-container">
-            <RiLockPasswordLine size={22} className="icon" />
-            <input
-              id="password"
-              type={showPassword2 ? "text" : "password"}
-              placeholder="Enter your current password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={
-                errors.password && touched.password ? "input-error" : ""
-              }
-            />
-            {showPassword2 ? (
-              <BsFillEyeFill
-                size={20}
-                className="icon-right"
-                color="rgb(24, 188, 230)"
-                onClick={togglePasswordVisibility2}
-              />
-            ) : (
-              <BsFillEyeSlashFill
-                size={20}
-                className="icon-right"
-                color="rgb(24, 188, 230)"
-                onClick={togglePasswordVisibility2}
-              />
-            )}
-            {/* <BsFillEyeSlashFill size={20} className="icon-right" /> */}
-          </div>
           {errors.password && touched.password && (
             <p className="error">{errors.password}</p>
           )}
@@ -210,7 +168,7 @@ const UpdateUser = ({ goBack }) => {
           <button disabled={isSubmitting} type="submit" class="button">
             Update Profile
           </button>
-          {/* <ToastContainer /> */}
+          <ToastContainer />
           <MdCancel
             size={40}
             className="icon-center"

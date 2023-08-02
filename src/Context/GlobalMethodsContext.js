@@ -53,7 +53,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const updateUser = async (values) => {
     try {
-      console.log("-->", user._id);
+      // console.log("-->user: ", user);
       const url = `http://localhost:4000/api/user/${user._id}`;
       const response = await axios({
         method: "PUT",
@@ -62,10 +62,15 @@ const GlobalMethodsProvider = ({ children }) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 401; // Customize this condition as needed
+        },
       });
 
       console.log(response.data);
-      setUser(response.data);
+      if (response.status === 200) setUser(response.data);
       // setUserName(response.data.name);
       return response;
     } catch (error) {

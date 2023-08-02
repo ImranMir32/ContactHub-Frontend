@@ -39,10 +39,6 @@ export const updateUserSchema = yup.object().shape({
     .string()
     .matches(phoneBd, { message: "Enter a valid phone number" })
     .required("Required"),
-  new_password: yup.string().min(5).matches(passwordRules, {
-    message:
-      "Password with minimum 5 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit.",
-  }),
   password: yup.string().required("Required"),
 });
 

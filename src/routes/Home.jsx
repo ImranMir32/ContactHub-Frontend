@@ -126,6 +126,16 @@ const Home = () => {
     };
 
     // const selectedFile=event.target.value;
+    if (file) {
+      const fileSizeInKB = Math.round(file.size / 1024); // Convert bytes to KB
+      if (fileSizeInKB > 70) {
+        toast.warning(`Image resolution is to high`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        return;
+      }
+      console.log(`File size: ${fileSizeInKB} KB`);
+    }
 
     if (imageURL === demo) {
       const user_id = user._id;
@@ -139,6 +149,9 @@ const Home = () => {
           formData
         );
         console.log(response.data);
+        toast.success(`Image uploaded successfully`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         // setUploadStatus("Image uploaded successfully");
       } catch (error) {
         console.error(error);
@@ -154,6 +167,9 @@ const Home = () => {
           formData
         );
         console.log(response.data);
+        toast.success(`Image uploaded successfully`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         // setUploadStatus("Image uploaded successfully");
       } catch (error) {
         console.error(error);

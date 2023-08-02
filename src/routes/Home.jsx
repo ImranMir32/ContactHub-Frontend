@@ -1,5 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/Home.css";
 import demo from "../assets/demo.webp";
@@ -12,9 +15,6 @@ import EditContact from "../components/EditContact";
 import UpdateUser from "../components/UpdateUser";
 import ViewContact from "../components/ViewContact";
 import AddContact from "../components/AddContact";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import { GlobalStateContext } from "../Context/Global_Context";
 import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
@@ -29,6 +29,7 @@ const Home = () => {
   const [show, setShow] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [contactTo, setContactTo] = useState({});
+  const [imageURL, setImageURL] = useState(demo);
 
   const navigate = useNavigate();
   // console.log("array--->", contactList);
@@ -39,25 +40,28 @@ const Home = () => {
     navigate("/");
   };
 
+  // Search Query
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value); // Update the search query state as the user types
   };
-
   const filteredContacts = contactList.filter((contact) =>
     contact.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Change page
   const handleButtonClick = (param) => {
     setPage(param.info);
     setContactTo(param.contact);
     setShow(false);
   };
 
+  // retun to home
   const handleGoBack = () => {
     setPage(""); // Reset the page to the initial state
     setShow(true); // Show the contact details section
   };
 
+  // Delete msg
   const handleDeleteButton = async (contact) => {
     console.log(contact);
     toast.info(
@@ -96,6 +100,70 @@ const Home = () => {
     );
   };
 
+  // All about image upload
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/api/image/${user._id}`)
+      .then((res) => {
+        console.log("data--->", res.data);
+        const base64String = btoa(
+          String.fromCharCode(...new Uint8Array(res.data.img.data.data))
+        );
+        console.log(res.data.img.data.data);
+
+        setImageURL(`data:image/png;base64,${base64String}`);
+      })
+      .catch((err) => console.log(err, "it has an error"));
+  }, [user._id]);
+
+  // const { imgUpload } = useContext(GlobalMethodsContext);
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImageURL(e.target.result);
+    };
+
+    // const selectedFile=event.target.value;
+
+    if (imageURL === demo) {
+      const user_id = user._id;
+      console.log(user_id);
+      const formData = new FormData();
+      formData.append("testImage", file);
+      formData.append("user_id", user_id);
+      try {
+        const response = await axios.post(
+          "http://localhost:4000/api/image/upload",
+          formData
+        );
+        console.log(response.data);
+        // setUploadStatus("Image uploaded successfully");
+      } catch (error) {
+        console.error(error);
+        // setUploadStatus("Error uploading image");
+      }
+    } else {
+      const user_id = user._id;
+      const formData = new FormData();
+      formData.append("testImage", file);
+      try {
+        const response = await axios.put(
+          `http://localhost:4000/api/image/${user_id}`,
+          formData
+        );
+        console.log(response.data);
+        // setUploadStatus("Image uploaded successfully");
+      } catch (error) {
+        console.error(error);
+        // setUploadStatus("Error uploading image");
+      }
+    }
+
+    reader.readAsDataURL(file);
+  };
+
   return (
     <div className="user-container">
       <div className="user-profile">
@@ -104,7 +172,13 @@ const Home = () => {
           Log Out
         </button>
         <div className="profile-image">
-          <img className="image" src={demo} alt="profile" />
+          <img className="image" src={imageURL} alt="profile" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="image-upload"
+          />
         </div>
         <div className="user-info">
           <p>Name : {user.name}</p>

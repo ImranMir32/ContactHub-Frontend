@@ -38,3 +38,14 @@
 .view-info p:not(:last-child) {
   border-bottom: none;
 }
+
+.image-upload-contact {
+  position: absolute;
+  cursor: pointer;
+  height: 180px;
+  width: 180px;
+  opacity: 0;
+  border-radius: 50%;
+  /* background-color: rgb(116, 10, 10);
+  border: 1px solid rgb(19, 181, 221); */
+}

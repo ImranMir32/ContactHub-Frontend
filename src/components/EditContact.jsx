@@ -4,8 +4,8 @@ import { contactSchema } from "../schemas/schemas";
 import "../styles/Contacts/AddContact.css";
 
 // import { GlobalStateContext } from "../Context/Global_Context";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { GrMail } from "react-icons/gr";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BiSolidUser } from "react-icons/bi";
@@ -32,7 +32,18 @@ const EditContact = ({ goBack, contact }) => {
       id: contact._id,
     };
     const res = await updateContact(obj);
-    console.log(res);
+    if (res.status === 200) {
+      goBack();
+      actions.resetForm();
+    } else if (res.status === 404) {
+      toast.warning(`${res.data}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.warning(`Network response was not ok`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   useEffect(() => {
@@ -136,7 +147,7 @@ const EditContact = ({ goBack, contact }) => {
           <button disabled={isSubmitting} type="submit" class="button">
             Update Contact
           </button>
-          {/* <ToastContainer /> */}
+          <ToastContainer />
           <MdCancel
             size={40}
             className="icon-center"

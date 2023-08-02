@@ -20,7 +20,7 @@ import { GlobalStateContext } from "../Context/Global_Context";
 import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 const Home = () => {
   const { user, contactList, reload } = useContext(GlobalStateContext);
-  const { clearAllData } = useContext(GlobalMethodsContext);
+  const { clearAllData, deleteContact } = useContext(GlobalMethodsContext);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [reload]);
@@ -56,7 +56,7 @@ const Home = () => {
     setShow(true); // Show the contact details section
   };
 
-  const handleDeleteButton = (contact) => {
+  const handleDeleteButton = async (contact) => {
     console.log(contact);
     toast.info(
       <div>
@@ -64,9 +64,10 @@ const Home = () => {
         <div className="toast-button">
           <button
             className="toast-button-yes"
-            onClick={() => {
+            onClick={async () => {
               // Perform the delete operation here
-              console.log("Contact deleted!", contact.name);
+              const res = await deleteContact(contact._id);
+              console.log("Contact deleted!", res);
               // Close the toast
               toast.dismiss();
             }}

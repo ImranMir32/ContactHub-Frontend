@@ -160,9 +160,9 @@ const Home = () => {
             {/* map */}
             {filteredContacts.map((contact) => (
               <div className="contact" key={contact.name}>
-                <div className="contact-img">
+                {/* <div className="contact-img">
                   <img className="img" src={demo} alt="profile" />
-                </div>
+                </div> */}
                 <div className="contact-info">
                   <p>Name : {contact.name}</p>
                   <p>Phone : {contact.phone}</p>

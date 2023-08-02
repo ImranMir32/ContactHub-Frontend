@@ -121,6 +121,7 @@
 
 .contact {
   display: flex;
+  justify-content: center;
   height: 125px;
   width: 470px;
   background-color: white;

@@ -28,6 +28,7 @@ const Home = () => {
   const [Page, setPage] = useState("");
   const [show, setShow] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [contactTo, setContactTo] = useState({});
 
   const navigate = useNavigate();
   // console.log("array--->", contactList);
@@ -47,7 +48,8 @@ const Home = () => {
   );
 
   const handleButtonClick = (param) => {
-    setPage(param);
+    setPage(param.info);
+    setContactTo(param.contact);
     setShow(false);
   };
 
@@ -169,7 +171,9 @@ const Home = () => {
                     <BsFillEyeFill
                       size={20}
                       color="white"
-                      onClick={() => handleButtonClick("View Contact")}
+                      onClick={() =>
+                        handleButtonClick({ contact, info: "View Contact" })
+                      }
                     />
                   </div>
                   <div className="edit">
@@ -197,7 +201,9 @@ const Home = () => {
           <div className="contact-details">
             {Page === "Update User" && <UpdateUser goBack={handleGoBack} />}
             {Page === "Add Contact" && <AddContact goBack={handleGoBack} />}
-            {Page === "View Contact" && <ViewContact goBack={handleGoBack} />}
+            {Page === "View Contact" && (
+              <ViewContact goBack={handleGoBack} contact={contactTo} />
+            )}
             {Page === "Edit Contact" && <EditContact goBack={handleGoBack} />}
           </div>
         </>

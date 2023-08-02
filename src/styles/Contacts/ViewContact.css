@@ -25,6 +25,9 @@
   border: 1px solid rgb(132, 5, 182);
 }
 
+.view-info {
+  width: 300px;
+}
 .view-info p {
   border: 1px solid rgb(132, 5, 182);
   height: 30px;

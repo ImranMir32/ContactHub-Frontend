@@ -5,7 +5,7 @@ import "../styles/Contacts/ViewContact.css";
 // import { MdDelete } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import React from "react";
-const ViewContact = ({ goBack }) => {
+const ViewContact = ({ goBack, contact }) => {
   return (
     <div className="view_">
       <div className="view-container">
@@ -14,10 +14,10 @@ const ViewContact = ({ goBack }) => {
             <img className="view-img" src={demo} alt="profile" />
           </div>
           <div className="view-info">
-            <p>Name : Imran Mir</p>
-            <p>Email: imranmir6677@gmail.com</p>
-            <p>Phone : 01111111111</p>
-            <p>Catagory : Friend</p>
+            <p>Name : {contact.name}</p>
+            <p>Email: {contact.email}</p>
+            <p>Phone : {contact.phone}</p>
+            <p>Category : {contact.category}</p>
             {/* <p>Total Contacts : 10</p> */}
           </div>
           <MdCancel

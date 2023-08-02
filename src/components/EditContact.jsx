@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useFormik } from "formik";
-import { userSchema } from "../schemas/schemas";
+import { contactSchema } from "../schemas/schemas";
 import "../styles/Contacts/AddContact.css";
 
 // import { GlobalStateContext } from "../Context/Global_Context";
@@ -13,9 +13,12 @@ import { ImMobile } from "react-icons/im";
 
 import { MdCancel } from "react-icons/md";
 
-const EditContact = ({ goBack }) => {
-  const catagoryList = {
-    name: ["", "Category 1", "Category 2", "Category 3"],
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
+
+const EditContact = ({ goBack, contact }) => {
+  const { updateContact } = useContext(GlobalMethodsContext);
+  const categoryList = {
+    name: ["", "Friend", "Family", "Colleague", "Others"],
     // Add other properties here if needed
   };
 
@@ -24,33 +27,12 @@ const EditContact = ({ goBack }) => {
     console.log(actions);
     console.log("ok");
     console.log(JSON.stringify(values));
-
-    // if (
-    //   values.email === "uitsadmin@gmail.com" &&
-    //   values.password === "uitsadmin"
-    // )
-    //   navigate("/admin-dashboard");
-
-    // let result = await fetch("http://localhost:8000/api/v1/users/login", {
-    //   method: "POST",
-    //   body: JSON.stringify(values),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // result = await result.json();
-    // // console.log("result--> ", result.newUser);
-    // actions.resetForm();
-
-    // if (result.status === "success") {
-    //   setUser(result.user);
-    //   if (result.user.role === "teacher") navigate("/teacher-dashboard");
-    //   else if (result.user.role === "driver") navigate("/driver-dashboard");
-    // } else {
-    //   toast.error("Wrong email or password !", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    // }
+    const obj = {
+      values,
+      id: contact._id,
+    };
+    const res = await updateContact(obj);
+    console.log(res);
   };
 
   useEffect(() => {
@@ -66,11 +48,12 @@ const EditContact = ({ goBack }) => {
     handleSubmit,
   } = useFormik({
     initialValues: {
-      name: "Md. Imran",
-      email: "imranmir@gmail.com",
-      phone: "0186678475",
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone,
+      category: contact.category,
     },
-    validationSchema: userSchema,
+    validationSchema: contactSchema,
     onSubmit,
   });
 
@@ -133,8 +116,13 @@ const EditContact = ({ goBack }) => {
 
           <div className="input-container">
             <BiSolidCategoryAlt size={20} className="icon" />
-            <select>
-              {catagoryList.name.map((category) => {
+            <select
+              id="category" // Note the correct spelling of 'category'
+              name="category"
+              value={values.category}
+              onChange={handleChange}
+            >
+              {categoryList.name.map((category) => {
                 return (
                   <option key={category} value={category}>
                     {category}

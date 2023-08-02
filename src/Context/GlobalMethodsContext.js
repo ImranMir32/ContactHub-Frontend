@@ -122,6 +122,33 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
+  const updateContact = async (param) => {
+    console.log("param-->", param);
+    try {
+      const url = `http://localhost:4000/api/contacts/${param.id}`;
+      const response = await axios({
+        method: "PUT",
+        url,
+        data: param.values,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 404; // Customize this condition as needed
+        },
+      });
+      console.log({ token });
+      await getAllContacts(token);
+
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return error.message;
+    }
+  };
+
   const deleteContact = async (param) => {
     console.log("param-->", param);
     try {
@@ -176,6 +203,7 @@ const GlobalMethodsProvider = ({ children }) => {
         // imgUpload,
         updateUser,
         addContact,
+        updateContact,
         deleteContact,
       }}
     >

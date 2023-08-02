@@ -4,8 +4,9 @@ import { contactSchema } from "../schemas/schemas";
 import "../styles/Contacts/AddContact.css";
 
 // import { GlobalStateContext } from "../Context/Global_Context";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+// import { useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import { GrMail } from "react-icons/gr";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BiSolidUser } from "react-icons/bi";
@@ -18,6 +19,7 @@ import { GlobalStateContext } from "../Context/Global_Context";
 const AddContact = ({ goBack }) => {
   const { addContact } = useContext(GlobalMethodsContext);
   const { setReload } = useContext(GlobalStateContext);
+  // const navigate = useNavigate();
   const categoryList = {
     name: ["", "Friend", "Family", "Colleague", "Others"],
     // Add other properties here if needed
@@ -31,6 +33,19 @@ const AddContact = ({ goBack }) => {
 
     const res = await addContact(values);
     console.log(res);
+
+    if (res.status === 201) {
+      goBack();
+      actions.resetForm();
+    } else if (res.status === 400) {
+      toast.warning(`${res.data}`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.warning(`Network response was not ok`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   useEffect(() => {
@@ -134,7 +149,7 @@ const AddContact = ({ goBack }) => {
           <button disabled={isSubmitting} type="submit" class="button">
             Add Contact
           </button>
-          {/* <ToastContainer /> */}
+          <ToastContainer />
           <MdCancel
             size={40}
             className="icon-center"

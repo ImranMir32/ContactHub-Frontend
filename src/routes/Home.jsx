@@ -135,7 +135,7 @@ const Home = () => {
               size={35}
               className="add"
               onClick={() => {
-                handleButtonClick("Add Contact");
+                handleButtonClick({ contact: {}, info: "Add Contact" });
               }}
             />
             {/* </button> */}
@@ -180,7 +180,9 @@ const Home = () => {
                     <FaEdit
                       size={20}
                       color="white"
-                      onClick={() => handleButtonClick("Edit Contact")}
+                      onClick={() =>
+                        handleButtonClick({ contact, info: "Edit Contact" })
+                      }
                     />
                   </div>
                   <div className="delete">
@@ -204,7 +206,9 @@ const Home = () => {
             {Page === "View Contact" && (
               <ViewContact goBack={handleGoBack} contact={contactTo} />
             )}
-            {Page === "Edit Contact" && <EditContact goBack={handleGoBack} />}
+            {Page === "Edit Contact" && (
+              <EditContact goBack={handleGoBack} contact={contactTo} />
+            )}
           </div>
         </>
       )}

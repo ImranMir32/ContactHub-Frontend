@@ -26,12 +26,7 @@ const UpdateUser = ({ goBack }) => {
   };
 
   const onSubmit = async (values, actions) => {
-    console.log(values);
-    console.log(actions);
-    console.log("ok");
-    console.log(JSON.stringify(values));
     const res = await updateUser(values);
-    console.log("res--->", res);
 
     if (res.status === 200) {
       setReload(true);
@@ -70,7 +65,6 @@ const UpdateUser = ({ goBack }) => {
     onSubmit,
   });
 
-  console.log(errors);
   return (
     <>
       <div class="form-container-3">
@@ -158,7 +152,6 @@ const UpdateUser = ({ goBack }) => {
                 onClick={togglePasswordVisibility}
               />
             )}
-            {/* <BsFillEyeSlashFill size={20} className="icon-right" /> */}
           </div>
           {errors.password && touched.password && (
             <p className="error">{errors.password}</p>
@@ -174,7 +167,6 @@ const UpdateUser = ({ goBack }) => {
             className="icon-center"
             onClick={() => {
               goBack();
-              console.log("yes");
             }}
           />
         </form>

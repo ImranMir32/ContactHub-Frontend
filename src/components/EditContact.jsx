@@ -3,14 +3,11 @@ import { useFormik } from "formik";
 import { contactSchema } from "../schemas/schemas";
 import "../styles/Contacts/AddContact.css";
 
-// import { GlobalStateContext } from "../Context/Global_Context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GrMail } from "react-icons/gr";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { BiSolidUser } from "react-icons/bi";
+import { BiSolidCategoryAlt, BiSolidUser } from "react-icons/bi";
 import { ImMobile } from "react-icons/im";
-
 import { MdCancel } from "react-icons/md";
 
 import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
@@ -19,14 +16,9 @@ const EditContact = ({ goBack, contact }) => {
   const { updateContact } = useContext(GlobalMethodsContext);
   const categoryList = {
     name: ["", "Friend", "Family", "Colleague", "Others"],
-    // Add other properties here if needed
   };
 
   const onSubmit = async (values, actions) => {
-    console.log(values);
-    console.log(actions);
-    console.log("ok");
-    console.log(JSON.stringify(values));
     const obj = {
       values,
       id: contact._id,
@@ -68,7 +60,6 @@ const EditContact = ({ goBack, contact }) => {
     onSubmit,
   });
 
-  console.log(errors);
   return (
     <>
       <div class="form-container-3">
@@ -128,7 +119,7 @@ const EditContact = ({ goBack, contact }) => {
           <div className="input-container">
             <BiSolidCategoryAlt size={20} className="icon" />
             <select
-              id="category" // Note the correct spelling of 'category'
+              id="category"
               name="category"
               value={values.category}
               onChange={handleChange}
@@ -153,7 +144,6 @@ const EditContact = ({ goBack, contact }) => {
             className="icon-center"
             onClick={() => {
               goBack();
-              console.log("yes");
             }}
           />
         </form>

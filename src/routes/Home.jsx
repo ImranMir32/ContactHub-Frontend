@@ -32,7 +32,6 @@ const Home = () => {
   const [imageURL, setImageURL] = useState(demo);
 
   const navigate = useNavigate();
-  // console.log("array--->", contactList);
 
   // functions
   const handleExitButton = () => {
@@ -63,7 +62,6 @@ const Home = () => {
 
   // Delete msg
   const handleDeleteButton = async (contact) => {
-    console.log(contact);
     toast.info(
       <div>
         <p>Are you sure you want to delete this contact?</p>
@@ -72,8 +70,8 @@ const Home = () => {
             className="toast-button-yes"
             onClick={async () => {
               // Perform the delete operation here
-              const res = await deleteContact(contact._id);
-              console.log("Contact deleted!", res);
+              await deleteContact(contact._id);
+
               // Close the toast
               toast.dismiss();
             }}
@@ -105,18 +103,14 @@ const Home = () => {
     axios
       .get(`http://localhost:4000/api/image/${user._id}`)
       .then((res) => {
-        console.log("data--->", res.data);
         const base64String = btoa(
           String.fromCharCode(...new Uint8Array(res.data.img.data.data))
         );
-        console.log(res.data.img.data.data);
 
         setImageURL(`data:image/png;base64,${base64String}`);
       })
       .catch((err) => console.log(err, "it has an error"));
   }, [user._id]);
-
-  // const { imgUpload } = useContext(GlobalMethodsContext);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -134,46 +128,33 @@ const Home = () => {
         });
         return;
       }
-      console.log(`File size: ${fileSizeInKB} KB`);
     }
 
     if (imageURL === demo) {
       const user_id = user._id;
-      console.log(user_id);
       const formData = new FormData();
       formData.append("testImage", file);
       formData.append("user_id", user_id);
       try {
-        const response = await axios.post(
-          "http://localhost:4000/api/image/upload",
-          formData
-        );
-        console.log(response.data);
+        await axios.post("http://localhost:4000/api/image/upload", formData);
         toast.success(`Image uploaded successfully`, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        // setUploadStatus("Image uploaded successfully");
       } catch (error) {
         console.error(error);
-        // setUploadStatus("Error uploading image");
       }
     } else {
       const user_id = user._id;
       const formData = new FormData();
       formData.append("testImage", file);
       try {
-        const response = await axios.put(
-          `http://localhost:4000/api/image/${user_id}`,
-          formData
-        );
-        console.log(response.data);
+        await axios.put(`http://localhost:4000/api/image/${user_id}`, formData);
+
         toast.success(`Image uploaded successfully`, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        // setUploadStatus("Image uploaded successfully");
       } catch (error) {
         console.error(error);
-        // setUploadStatus("Error uploading image");
       }
     }
 
@@ -221,7 +202,6 @@ const Home = () => {
       {show ? (
         <div className="contact-details">
           <div className="search-bar-with-add">
-            {/* <button className=""> */}
             <BsPersonFillAdd
               color="rgb(132, 5, 182)"
               size={35}
@@ -230,7 +210,7 @@ const Home = () => {
                 handleButtonClick({ contact: {}, info: "Add Contact" });
               }}
             />
-            {/* </button> */}
+
             <div className="search-bar">
               <div className="input-container search-input">
                 <input
@@ -250,9 +230,6 @@ const Home = () => {
             {/* map */}
             {filteredContacts.map((contact) => (
               <div className="contact" key={contact.name}>
-                {/* <div className="contact-img">
-                  <img className="img" src={demo} alt="profile" />
-                </div> */}
                 <div className="contact-info">
                   <p>Name : {contact.name}</p>
                   <p>Phone : {contact.phone}</p>

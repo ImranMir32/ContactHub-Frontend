@@ -15,18 +15,14 @@ const ViewContact = ({ goBack, contact }) => {
     axios
       .get(`http://localhost:4000/api/image/${contact._id}`)
       .then((res) => {
-        console.log("data--->", res.data);
         const base64String = btoa(
           String.fromCharCode(...new Uint8Array(res.data.img.data.data))
         );
-        console.log(res.data.img.data.data);
 
         setImageURL(`data:image/png;base64,${base64String}`);
       })
       .catch((err) => console.log(err, "it has an error"));
   }, [contact._id]);
-
-  // const { imgUpload } = useContext(GlobalMethodsContext);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -43,52 +39,41 @@ const ViewContact = ({ goBack, contact }) => {
         });
         return;
       }
-      console.log(`File size: ${fileSizeInKB} KB`);
     }
 
     if (imageURL === demo) {
       const user_id = contact._id;
-      console.log(user_id);
+
       const formData = new FormData();
       formData.append("testImage", file);
       formData.append("user_id", user_id);
       try {
-        const response = await axios.post(
-          "http://localhost:4000/api/image/upload",
-          formData
-        );
-        console.log(response.data);
+        await axios.post("http://localhost:4000/api/image/upload", formData);
+
         toast.success(`Image uploaded successfully`, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        // setUploadStatus("Image uploaded successfully");
       } catch (error) {
         console.error(error);
         toast.warning(`${error}`, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        // setUploadStatus("Error uploading image");
       }
     } else {
       const user_id = contact._id;
       const formData = new FormData();
       formData.append("testImage", file);
       try {
-        const response = await axios.put(
-          `http://localhost:4000/api/image/${user_id}`,
-          formData
-        );
-        console.log(response.data);
+        await axios.put(`http://localhost:4000/api/image/${user_id}`, formData);
+
         toast.success(`Image uploaded successfully`, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        // setUploadStatus("Image uploaded successfully");
       } catch (error) {
         console.error(error);
         toast.warning(`${error}`, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        // setUploadStatus("Error uploading image");
       }
     }
 
@@ -114,7 +99,6 @@ const ViewContact = ({ goBack, contact }) => {
             <p>Email: {contact.email}</p>
             <p>Phone : {contact.phone}</p>
             <p>Category : {contact.category}</p>
-            {/* <p>Total Contacts : 10</p> */}
           </div>
           <MdCancel
             size={40}
@@ -122,7 +106,6 @@ const ViewContact = ({ goBack, contact }) => {
             color="rgb(132, 5, 182)"
             onClick={() => {
               goBack();
-              console.log("yes");
             }}
           />
         </div>

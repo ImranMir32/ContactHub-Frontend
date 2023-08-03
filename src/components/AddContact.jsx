@@ -3,13 +3,10 @@ import { useFormik } from "formik";
 import { contactSchema } from "../schemas/schemas";
 import "../styles/Contacts/AddContact.css";
 
-// import { GlobalStateContext } from "../Context/Global_Context";
 import { ToastContainer, toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { GrMail } from "react-icons/gr";
-import { BiSolidCategoryAlt } from "react-icons/bi";
-import { BiSolidUser } from "react-icons/bi";
+import { BiSolidCategoryAlt, BiSolidUser } from "react-icons/bi";
 import { ImMobile } from "react-icons/im";
 import { MdCancel } from "react-icons/md";
 
@@ -19,20 +16,13 @@ import { GlobalStateContext } from "../Context/Global_Context";
 const AddContact = ({ goBack }) => {
   const { addContact } = useContext(GlobalMethodsContext);
   const { setReload } = useContext(GlobalStateContext);
-  // const navigate = useNavigate();
+
   const categoryList = {
     name: ["", "Friend", "Family", "Colleague", "Others"],
-    // Add other properties here if needed
   };
 
   const onSubmit = async (values, actions) => {
-    console.log(values);
-    console.log(actions);
-    console.log("ok");
-    console.log(JSON.stringify(values));
-
     const res = await addContact(values);
-    console.log(res);
 
     if (res.status === 201) {
       goBack();
@@ -70,7 +60,6 @@ const AddContact = ({ goBack }) => {
     onSubmit,
   });
 
-  console.log(errors);
   return (
     <>
       <div class="form-container-3">
@@ -130,7 +119,7 @@ const AddContact = ({ goBack }) => {
           <div className="input-container">
             <BiSolidCategoryAlt size={20} className="icon" />
             <select
-              id="category" // Note the correct spelling of 'category'
+              id="category"
               name="category"
               value={values.category}
               onChange={handleChange}
@@ -156,7 +145,6 @@ const AddContact = ({ goBack }) => {
             onClick={() => {
               setReload(true);
               goBack();
-              console.log("yes");
             }}
           />
         </form>

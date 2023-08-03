@@ -9,7 +9,6 @@ const GlobalMethodsProvider = ({ children }) => {
     useContext(GlobalStateContext);
 
   const SignIn = async (values) => {
-    console.log("values----", values);
     try {
       const url = "http://localhost:4000/api/user/login";
       const response = await axios({
@@ -17,20 +16,18 @@ const GlobalMethodsProvider = ({ children }) => {
         url,
         data: values,
       });
-      console.log("name: ", response);
+
       setToken(response.data.access_token);
       setUser(response.data.user);
       const params = response.data.access_token;
       await getAllContacts(params);
       return response;
     } catch (error) {
-      console.log(error.message);
       return 401;
     }
   };
 
   const SignUp = async (values) => {
-    console.log("-->", values);
     try {
       const url = "http://localhost:4000/api/user/register";
       const response = await axios({
@@ -43,17 +40,15 @@ const GlobalMethodsProvider = ({ children }) => {
           return status >= 200 && status <= 400; // Customize this condition as needed
         },
       });
-      console.log(response);
+
       return response;
     } catch (error) {
-      console.log(error.message);
       return error.message;
     }
   };
 
   const updateUser = async (values) => {
     try {
-      // console.log("-->user: ", user);
       const url = `http://localhost:4000/api/user/${user._id}`;
       const response = await axios({
         method: "PUT",
@@ -69,9 +64,8 @@ const GlobalMethodsProvider = ({ children }) => {
         },
       });
 
-      console.log(response.data);
       if (response.status === 200) setUser(response.data);
-      // setUserName(response.data.name);
+
       return response;
     } catch (error) {
       console.log(error.message);
@@ -81,7 +75,6 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const getAllContacts = async (params) => {
     try {
-      console.log("va-", params);
       const url = `http://localhost:4000/api/contacts`;
       const response = await axios({
         method: "GET",
@@ -91,7 +84,6 @@ const GlobalMethodsProvider = ({ children }) => {
         },
       });
 
-      console.log("contacts----->", response.data.length);
       setContactList(response.data);
       return;
     } catch (error) {
@@ -101,7 +93,6 @@ const GlobalMethodsProvider = ({ children }) => {
   };
 
   const addContact = async (values) => {
-    console.log("-->", values);
     try {
       const url = "http://localhost:4000/api/contacts";
       const response = await axios({
@@ -117,18 +108,16 @@ const GlobalMethodsProvider = ({ children }) => {
           return status >= 200 && status <= 400; // Customize this condition as needed
         },
       });
-      console.log({ token });
+
       await getAllContacts(token);
 
       return response;
     } catch (error) {
-      console.log(error.message);
       return error.message;
     }
   };
 
   const updateContact = async (param) => {
-    console.log("param-->", param);
     try {
       const url = `http://localhost:4000/api/contacts/${param.id}`;
       const response = await axios({
@@ -144,7 +133,7 @@ const GlobalMethodsProvider = ({ children }) => {
           return status >= 200 && status <= 404; // Customize this condition as needed
         },
       });
-      console.log({ token });
+
       await getAllContacts(token);
 
       return response;
@@ -155,7 +144,6 @@ const GlobalMethodsProvider = ({ children }) => {
   };
 
   const deleteContact = async (param) => {
-    console.log("param-->", param);
     try {
       const url = `http://localhost:4000/api/contacts/${param}`;
       const response = await axios({
@@ -170,7 +158,7 @@ const GlobalMethodsProvider = ({ children }) => {
           return status >= 200 && status <= 404; // Customize this condition as needed
         },
       });
-      console.log({ token });
+
       await getAllContacts(token);
 
       return response;
@@ -179,20 +167,6 @@ const GlobalMethodsProvider = ({ children }) => {
       return error.message;
     }
   };
-
-  //   const imgUpload = async (values) => {
-  //     try {
-  //       await axios.post("http://localhost:4000/api/image/upload", values, {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       });
-  //       console.log("Image uploaded successfully");
-  //     } catch (error) {
-  //       console.log(error.message);
-  //       return 401;
-  //     }
-  //   };
 
   const clearAllData = () => {
     setToken("");
@@ -205,7 +179,6 @@ const GlobalMethodsProvider = ({ children }) => {
         clearAllData,
         SignIn,
         SignUp,
-        // imgUpload,
         updateUser,
         addContact,
         updateContact,

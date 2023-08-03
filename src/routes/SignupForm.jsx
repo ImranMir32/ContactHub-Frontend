@@ -29,15 +29,7 @@ const SignupForm = () => {
   };
 
   const onSubmit = async (values, actions) => {
-    console.log(values);
-    console.log(actions);
-    console.log("ok");
-    console.log(JSON.stringify(values));
-
     const res = await SignUp(values);
-
-    console.log("status--->", res.status);
-    console.log("data--->", res.data);
 
     if (res.status === 201) {
       toast.success(`${res.data}`, {
@@ -81,14 +73,12 @@ const SignupForm = () => {
     onSubmit,
   });
 
-  console.log(errors);
   return (
     <>
       <main class="main">
         <div className="container">
           <div class="form-container-2">
             <h1 className="header">ContactHub</h1>
-            {/* <h1 className="header-text">Sign-Up</h1> */}
             <form class="form" onSubmit={handleSubmit} autoComplete="off">
               {/* name */}
               <div className="input-container">
@@ -170,7 +160,6 @@ const SignupForm = () => {
                     onClick={togglePasswordVisibility}
                   />
                 )}
-                {/* <BsFillEyeSlashFill size={20} className="icon-right" /> */}
               </div>
               {errors.password && touched.password && (
                 <p className="error">{errors.password}</p>
@@ -207,7 +196,6 @@ const SignupForm = () => {
                     onClick={togglePasswordVisibility2}
                   />
                 )}
-                {/* <BsFillEyeSlashFill size={20} className="icon-right" /> */}
               </div>
               {errors.confirmPassword && touched.confirmPassword && (
                 <p className="error">{errors.confirmPassword}</p>

@@ -4,7 +4,6 @@ import { signInSchema } from "../schemas/schemas";
 import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
-// import { GlobalStateContext } from "../Context/Global_Context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,21 +16,14 @@ const SignInForm = () => {
   const { SignIn } = useContext(GlobalMethodsContext);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
   // functions
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const onSubmit = async (values, actions) => {
-    console.log(values);
-    console.log(actions);
-    console.log("ok");
-    console.log(JSON.stringify(values));
-
     const res = await SignIn(values);
-
-    console.log("status--->", res.status);
-    console.log("data--->", res.data);
 
     if (res.status === 200) {
       navigate("/home");
@@ -63,17 +55,14 @@ const SignInForm = () => {
     onSubmit,
   });
 
-  console.log(errors);
   return (
     <>
       <main class="main">
         <div className="container">
           <div class="form-container">
             <h1 className="header">ContactHub</h1>
-            {/* <h1 className="header-text">Login</h1> */}
             <form class="form" onSubmit={handleSubmit} autoComplete="off">
               {/* email */}
-
               <div className="input-container">
                 <GrMail size={20} className="icon" />
                 <input
@@ -119,7 +108,6 @@ const SignInForm = () => {
                     onClick={togglePasswordVisibility}
                   />
                 )}
-                {/* <BsFillEyeSlashFill size={20} className="icon-right" /> */}
               </div>
               {errors.password && touched.password && (
                 <p className="error">{errors.password}</p>

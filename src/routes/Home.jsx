@@ -101,7 +101,7 @@ const Home = () => {
   // All about image upload
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/api/image/${user._id}`)
+      .get(`https://contacthub-backend.onrender.com/api/image/${user._id}`)
       .then((res) => {
         const base64String = btoa(
           String.fromCharCode(...new Uint8Array(res.data.img.data.data))
@@ -136,7 +136,10 @@ const Home = () => {
       formData.append("testImage", file);
       formData.append("user_id", user_id);
       try {
-        await axios.post("http://localhost:4000/api/image/upload", formData);
+        await axios.post(
+          "https://contacthub-backend.onrender.com/api/image/upload",
+          formData
+        );
         toast.success(`Image uploaded successfully`, {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -148,7 +151,10 @@ const Home = () => {
       const formData = new FormData();
       formData.append("testImage", file);
       try {
-        await axios.put(`http://localhost:4000/api/image/${user_id}`, formData);
+        await axios.put(
+          `https://contacthub-backend.onrender.com/api/image/${user_id}`,
+          formData
+        );
 
         toast.success(`Image uploaded successfully`, {
           position: toast.POSITION.TOP_RIGHT,

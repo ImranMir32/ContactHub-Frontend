@@ -32,7 +32,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const SignIn = async (values) => {
     try {
-      const url = "http://localhost:4000/api/user/login";
+      const url = "https://contacthub-backend.onrender.com/api/user/login";
       const response = await axios({
         method: "POST",
         url,
@@ -51,7 +51,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const SignUp = async (values) => {
     try {
-      const url = "http://localhost:4000/api/user/register";
+      const url = "https://contacthub-backend.onrender.com/api/user/register";
       const response = await axios({
         method: "POST",
         url,
@@ -71,7 +71,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const updateUser = async (values) => {
     try {
-      const url = `http://localhost:4000/api/user/${user._id}`;
+      const url = `https://contacthub-backend.onrender.com/api/user/${user._id}`;
       const response = await axios({
         method: "PUT",
         url,
@@ -97,7 +97,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const getAllContacts = async (params) => {
     try {
-      const url = `http://localhost:4000/api/contacts`;
+      const url = `https://contacthub-backend.onrender.com/api/contacts`;
       const response = await axios({
         method: "GET",
         url,
@@ -116,7 +116,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const addContact = async (values) => {
     try {
-      const url = "http://localhost:4000/api/contacts";
+      const url = "https://contacthub-backend.onrender.com/api/contacts";
       const response = await axios({
         method: "POST",
         url,
@@ -141,7 +141,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const updateContact = async (param) => {
     try {
-      const url = `http://localhost:4000/api/contacts/${param.id}`;
+      const url = `https://contacthub-backend.onrender.com/api/contacts/${param.id}`;
       const response = await axios({
         method: "PUT",
         url,
@@ -167,7 +167,7 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const deleteContact = async (param) => {
     try {
-      const url = `http://localhost:4000/api/contacts/${param}`;
+      const url = `https://contacthub-backend.onrender.com/api/contacts/${param}`;
       const response = await axios({
         method: "DELETE",
         url,

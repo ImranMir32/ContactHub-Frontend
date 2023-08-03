@@ -1,5 +1,5 @@
 import { GlobalStateContext } from "./Global_Context";
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import axios from "axios";
 
 const GlobalMethodsContext = createContext();
@@ -7,6 +7,28 @@ const GlobalMethodsContext = createContext();
 const GlobalMethodsProvider = ({ children }) => {
   const { user, token, setToken, setUser, setContactList } =
     useContext(GlobalStateContext);
+
+  // Load token and user data from local storage
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, [setToken, setUser]);
+
+  // Update local storage whenever token or user changes
+  useEffect(() => {
+    localStorage.setItem("token", token);
+  }, [token]);
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
 
   const SignIn = async (values) => {
     try {

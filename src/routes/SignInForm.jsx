@@ -26,6 +26,8 @@ const SignInForm = () => {
     const res = await SignIn(values);
 
     if (res.status === 200) {
+      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/home");
       actions.resetForm();
     } else {
